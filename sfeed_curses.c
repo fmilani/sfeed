@@ -208,11 +208,6 @@ ttywrite(const char *s)
 	return write(1, s, strlen(s));
 }
 
-/* Hint for compilers and static analyzers that a function exits. */
-#ifndef __dead
-#define __dead
-#endif
-
 /* Print to stderr, call cleanup() and _exit(). */
 __dead void
 die(const char *fmt, ...)
