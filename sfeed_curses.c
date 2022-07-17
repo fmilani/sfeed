@@ -129,10 +129,16 @@ struct item {
 	off_t offset; /* line offset in file for lazyload */
 };
 
+struct urls {
+	char **items; /* array of urls */
+	size_t len;   /* amount of items */
+	size_t cap;   /* available capacity */
+};
+
 struct items {
-	struct item *items;     /* array of items */
-	size_t len;             /* amount of items */
-	size_t cap;             /* available capacity */
+	struct item *items; /* array of items */
+	size_t len;         /* amount of items */
+	size_t cap;         /* available capacity */
 };
 
 void alldirty(void);
@@ -144,9 +150,9 @@ void pane_draw(struct pane *);
 void sighandler(int);
 void updategeom(void);
 void updatesidebar(void);
-void urls_free(void);
-int urls_isnew(const char *);
-void urls_read(void);
+void urls_free(struct urls *);
+int urls_hasmatch(struct urls *, const char *);
+void urls_read(struct urls *, const char *);
 
 static struct linebar linebar;
 static struct statusbar statusbar;
@@ -169,8 +175,8 @@ static struct feed *feeds;
 static struct feed *curfeed;
 static size_t nfeeds; /* amount of feeds */
 static time_t comparetime;
-static char *urlfile, **urls;
-static size_t nurls;
+struct urls urls;
+static char *urlfile;
 
 volatile sig_atomic_t state_sigchld = 0, state_sighup = 0, state_sigint = 0;
 volatile sig_atomic_t state_sigterm = 0, state_sigwinch = 0;
@@ -1197,9 +1203,9 @@ feed_items_get(struct feed *f, FILE *fp, struct items *itemsret)
 		if (n <= 0 || feof(fp))
 			break;
 	}
-	itemsret->cap = cap;
 	itemsret->items = items;
 	itemsret->len = nitems;
+	itemsret->cap = cap;
 	free(line);
 }
 
@@ -1218,7 +1224,7 @@ updatenewitems(struct feed *f)
 		row = &(p->rows[i]); /* do not use pane_row_get() */
 		item = row->data;
 		if (urlfile)
-			item->isnew = urls_isnew(item->matchnew);
+			item->isnew = !urls_hasmatch(&urls, item->matchnew);
 		else
 			item->isnew = (item->timeok && item->timestamp >= comparetime);
 		row->bold = item->isnew;
@@ -1264,7 +1270,7 @@ feed_count(struct feed *f, FILE *fp)
 		parseline(line, fields);
 
 		if (urlfile) {
-			f->totalnew += urls_isnew(fields[fields[FieldLink][0] ? FieldLink : FieldId]);
+			f->totalnew += !urls_hasmatch(&urls, fields[fields[FieldLink][0] ? FieldLink : FieldId]);
 		} else {
 			parsedtime = 0;
 			if (!strtotime(fields[FieldUnixTimestamp], &parsedtime))
@@ -1383,9 +1389,9 @@ feeds_reloadall(void)
 
 	pos = panes[PaneItems].pos; /* store numeric item position */
 	feeds_set(curfeed); /* close and reopen feed if possible */
-	urls_read();
+	urls_read(&urls, urlfile);
 	feeds_load(feeds, nfeeds);
-	urls_free();
+	urls_free(&urls);
 	/* restore numeric item position */
 	pane_setpos(&panes[PaneItems], pos);
 	updatesidebar();
@@ -1408,10 +1414,10 @@ feed_open_selected(struct pane *p)
 		return;
 	f = row->data;
 	feeds_set(f);
-	urls_read();
+	urls_read(&urls, urlfile);
 	if (f->fp)
 		feed_load(f, f->fp);
-	urls_free();
+	urls_free(&urls);
 	/* redraw row: counts could be changed */
 	updatesidebar();
 	updatetitle();
@@ -1901,32 +1907,34 @@ urls_cmp(const void *v1, const void *v2)
 	return strcmp(*((char **)v1), *((char **)v2));
 }
 
+void
+urls_free(struct urls *urls)
+{
+	while (urls->len > 0) {
+		urls->len--;
+		free(urls->items[urls->len]);
+	}
+	urls->items = NULL;
+	urls->len = 0;
+	urls->cap = 0;
+}
+
 int
-urls_isnew(const char *url)
+urls_hasmatch(struct urls *urls, const char *url)
 {
-	return (!nurls ||
-	       bsearch(&url, urls, nurls, sizeof(char *), urls_cmp) == NULL);
+	return (urls->len &&
+	       bsearch(&url, urls->items, urls->len, sizeof(char *), urls_cmp));
 }
 
 void
-urls_free(void)
-{
-	while (nurls > 0)
-		free(urls[--nurls]);
-	free(urls);
-	urls = NULL;
-	nurls = 0;
-}
-
-void
-urls_read(void)
+urls_read(struct urls *urls, const char *urlfile)
 {
 	FILE *fp;
 	char *line = NULL;
-	size_t linesiz = 0, cap = 0;
+	size_t linesiz = 0;
 	ssize_t n;
 
-	urls_free();
+	urls_free(urls);
 
 	if (!urlfile)
 		return;
@@ -1936,19 +1944,19 @@ urls_read(void)
 	while ((n = getline(&line, &linesiz, fp)) > 0) {
 		if (line[n - 1] == '\n')
 			line[--n] = '\0';
-		if (nurls + 1 >= cap) {
-			cap = cap ? cap * 2 : 16;
-			urls = erealloc(urls, cap * sizeof(char *));
+		if (urls->len + 1 >= urls->cap) {
+			urls->cap = urls->cap ? urls->cap * 2 : 16;
+			urls->items = erealloc(urls->items, urls->cap * sizeof(char *));
 		}
-		urls[nurls++] = estrdup(line);
+		urls->items[urls->len++] = estrdup(line);
 	}
 	if (ferror(fp))
 		die("getline: %s", urlfile);
 	fclose(fp);
 	free(line);
 
-	if (nurls > 0)
-		qsort(urls, nurls, sizeof(char *), urls_cmp);
+	if (urls->len > 0)
+		qsort(urls->items, urls->len, sizeof(char *), urls_cmp);
 }
 
 int
@@ -2016,9 +2024,9 @@ main(int argc, char *argv[])
 		nfeeds = argc - 1;
 	}
 	feeds_set(&feeds[0]);
-	urls_read();
+	urls_read(&urls, urlfile);
 	feeds_load(feeds, nfeeds);
-	urls_free();
+	urls_free(&urls);
 
 	if (!isatty(0)) {
 		if ((fd = open("/dev/tty", O_RDONLY)) == -1)
