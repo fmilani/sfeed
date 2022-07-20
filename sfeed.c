@@ -530,7 +530,7 @@ gettzoffset(const char *s)
 			;
 		if (i != 3)
 			return 0;
-		/* compare tz and adjust offset relative to UTC */
+		/* compare timezone and adjust offset relative to UTC */
 		for (i = 0; i < sizeof(tzones) / sizeof(*tzones); i++) {
 			if (!memcmp(s, tzones[i].name, 3))
 				return tzones[i].offhour;
@@ -978,7 +978,7 @@ xmltagend(XMLParser *p, const char *t, size_t tl, int isshort)
 	} else if (ctx.tag.id && istag(ctx.tag.name, ctx.tag.len, t, tl)) {
 		/* matched tag end: close it */
 		/* copy also to the link field if the attribute isPermaLink="true"
-		   and it is not set by a tag with higher prio. */
+		   and it is not set by a tag with higher priority. */
 		if (ctx.tag.id == RSSTagGuidPermalinkTrue && ctx.field &&
 		    ctx.tag.id > ctx.fields[FeedFieldLink].tagid) {
 			string_clear(&ctx.fields[FeedFieldLink].str);

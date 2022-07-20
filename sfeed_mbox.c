@@ -22,8 +22,8 @@ djb2(unsigned char *s, unsigned long long hash)
 }
 
 /* Unescape / decode fields printed by string_print_encoded()
- * "\\" to "\", "\t", to TAB, "\n" to newline. Unrecognised escape sequences
- * are ignored: "\z" etc. Mangle "From " in mboxrd style (always prefix >). */
+ * "\\" to "\", "\t", to TAB, "\n" to newline. Other escape sequences are
+ * ignored: "\z" etc. Mangle "From " in mboxrd style (always prefix >). */
 static void
 printcontent(const char *s, FILE *fp)
 {

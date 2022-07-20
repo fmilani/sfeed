@@ -130,7 +130,7 @@ struct item {
 };
 
 struct urls {
-	char **items; /* array of urls */
+	char **items; /* array of URLs */
 	size_t len;   /* amount of items */
 	size_t cap;   /* available capacity */
 };
