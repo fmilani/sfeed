@@ -1914,6 +1914,7 @@ urls_free(struct urls *urls)
 		urls->len--;
 		free(urls->items[urls->len]);
 	}
+	free(urls->items);
 	urls->items = NULL;
 	urls->len = 0;
 	urls->cap = 0;
