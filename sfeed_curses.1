@@ -1,4 +1,4 @@
-.Dd May 5, 2022
+.Dd December 20, 2022
 .Dt SFEED_CURSES 1
 .Os
 .Sh NAME
@@ -312,24 +312,26 @@ sfeed_curses ~/.sfeed/feeds/*
 Which does the following:
 .Bl -enum
 .It
+Set commands to execute automatically:
+.Pp
 Set the current layout to a horizontal mode ('2' keybind').
 Showing a feeds sidebar on the top and the feed items on the bottom.
-.It
+.Pp
 Toggle showing only feeds with new items in the sidebar ('t' keybind).
-.It
+.Pp
 Go to the first row in the current panel ('g' keybind).
-.It
+.Pp
 Load the current selected feed ('o' keybind').
 .It
 Set a file to use for managing read and unread items.
-This file is a plain-text file containing a list of read URLs, one URL per
-line.
+This is a plain-text file containing a list of read URLs, one URL per line.
 .It
 Check if this file for managing the read and unread items exists.
 If it doesn't exist yet then create an empty file.
 .It
 Start
-.Nm .
+.Nm
+and read the specified feed files.
 .El
 .Sh SEE ALSO
 .Xr sfeed 1 ,
