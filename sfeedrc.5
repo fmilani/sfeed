@@ -1,4 +1,4 @@
-.Dd May 2, 2022
+.Dd January 18, 2023
 .Dt SFEEDRC 5
 .Os
 .Sh NAME
@@ -59,12 +59,12 @@ is a shellscript each function can be overridden to change its behaviour,
 notable functions are:
 .Bl -tag -width Ds
 .It Fn fetch "name" "url" "feedfile"
-Fetch feed from URL and writes data to stdout, its arguments are:
+Fetch feed from URL and write the data to stdout, its arguments are:
 .Bl -tag -width Ds
 .It Fa name
 Specified name in configuration file (useful for logging).
 .It Fa url
-Url to fetch.
+URL to fetch.
 .It Fa feedfile
 Used feedfile (useful for comparing modification times).
 .El
@@ -73,8 +73,9 @@ By default the tool
 .Xr curl 1
 is used.
 .It Fn convertencoding "name" "from" "to"
-Convert from text-encoding to another and writes it to stdout, its arguments
-are:
+Convert data from stdin from one text-encoding to another and write it to
+stdout,
+its arguments are:
 .Bl -tag -width Ds
 .It Fa name
 Feed name.
@@ -88,9 +89,9 @@ By default the tool
 .Xr iconv 1
 is used.
 .It Fn parse "name" "feedurl" "basesiteurl"
-Parse and convert RSS/Atom XML to the
+Read RSS/Atom XML data from stdin, convert and write it as
 .Xr sfeed 5
-TSV format.
+data to stdout.
 .Bl -tag -width Ds
 .It Fa name
 Name of the feed.
@@ -103,13 +104,15 @@ This argument allows to fix relative item links.
 .It Fn filter "name"
 Filter
 .Xr sfeed 5
-data from stdin, write to stdout, its arguments are:
+data from stdin and write it to stdout, its arguments are:
 .Bl -tag -width Ds
 .It Fa name
 Feed name.
 .El
 .It Fn merge "name" "oldfile" "newfile"
-Merge data of oldfile with newfile and writes it to stdout, its arguments are:
+Merge
+.Xr sfeed 5
+data of oldfile with newfile and write it to stdout, its arguments are:
 .Bl -tag -width Ds
 .It Fa name
 Feed name.
@@ -121,7 +124,7 @@ New file.
 .It Fn order "name"
 Sort
 .Xr sfeed 5
-data from stdin, write to stdout, its arguments are:
+data from stdin and write it to stdout, its arguments are:
 .Bl -tag -width Ds
 .It Fa name
 Feed name.
