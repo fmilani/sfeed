@@ -26,8 +26,8 @@ size_t strlcpy(char *, const char *, size_t);
 #define PAD_TRUNCATE_SYMBOL    "\xe2\x80\xa6" /* symbol: "ellipsis" */
 #define UTF_INVALID_SYMBOL     "\xef\xbf\xbd" /* symbol: "replacement" */
 #else
-#define PAD_TRUNCATE_SYMBOL    "." /* symbol: "ellipsis" */
-#define UTF_INVALID_SYMBOL     "?" /* symbol: "replacement" */
+#define PAD_TRUNCATE_SYMBOL    "."
+#define UTF_INVALID_SYMBOL     "?"
 #endif
 
 /* feed info */

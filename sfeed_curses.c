@@ -37,10 +37,10 @@
 #define LINEBAR_SYMBOL_BAR     "\xe2\x94\x80" /* symbol: "light horizontal" */
 #define LINEBAR_SYMBOL_RIGHT   "\xe2\x94\xa4" /* symbol: "light vertical and left" */
 #else
-#define SCROLLBAR_SYMBOL_BAR   "|" /* symbol: "light vertical" */
+#define SCROLLBAR_SYMBOL_BAR   "|"
 #define SCROLLBAR_SYMBOL_TICK  " "
-#define LINEBAR_SYMBOL_BAR     "-" /* symbol: "light horizontal" */
-#define LINEBAR_SYMBOL_RIGHT   "|" /* symbol: "light vertical and left" */
+#define LINEBAR_SYMBOL_BAR     "-"
+#define LINEBAR_SYMBOL_RIGHT   "|"
 #endif
 
 /* color-theme */
