@@ -1,6 +1,5 @@
 #include <sys/types.h>
 
-#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -123,8 +122,8 @@ int
 main(int argc, char *argv[])
 {
 	FILE *fpitems, *fpindex, *fp;
-	char *name, *p, path[PATH_MAX + 1];
-	int i, r;
+	char *name, *p;
+	int i;
 
 	if (argc == 1) {
 		if (pledge("stdio", NULL) == -1)
@@ -168,15 +167,11 @@ main(int argc, char *argv[])
 
 			if (!(fp = fopen(argv[i], "r")))
 				err(1, "fopen: %s", argv[i]);
-
-			r = snprintf(path, sizeof(path), "%s", name);
-			if (r < 0 || (size_t)r >= sizeof(path))
-				errx(1, "path truncation: %s", path);
-			if (!(fpitems = fopen(path, "wb")))
+			if (!(fpitems = fopen(name, "wb")))
 				err(1, "fopen");
 			printfeed(fpitems, fp, &f);
 			checkfileerror(fp, argv[i], 'r');
-			checkfileerror(fpitems, path, 'w');
+			checkfileerror(fpitems, name, 'w');
 			fclose(fp);
 			fclose(fpitems);
 
@@ -185,7 +180,7 @@ main(int argc, char *argv[])
 			gophertext(fpindex, name);
 			fprintf(fpindex, " (%lu/%lu)\t", f.totalnew, f.total);
 			gophertext(fpindex, prefixpath);
-			gophertext(fpindex, path);
+			gophertext(fpindex, name);
 			fprintf(fpindex, "\t%s\t%s\r\n", host, port);
 		}
 		fputs(".\r\n", fpindex);
