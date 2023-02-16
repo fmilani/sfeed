@@ -2119,12 +2119,15 @@ main(int argc, char *argv[])
 
 				mousereport(button, release, keymask, x - 1, y - 1);
 				break;
+			/* DEC/SUN: ESC O char, HP: ESC char or SCO: ESC [ char */
 			case 'A': goto keyup;    /* arrow up */
 			case 'B': goto keydown;  /* arrow down */
 			case 'C': goto keyright; /* arrow right */
 			case 'D': goto keyleft;  /* arrow left */
 			case 'F': goto endpos;   /* end */
+			case 'G': goto nextpage; /* page down */
 			case 'H': goto startpos; /* home */
+			case 'I': goto prevpage; /* page up */
 			default:
 				if (!(ch >= '0' && ch <= '9'))
 					break;
