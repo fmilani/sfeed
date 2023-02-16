@@ -2146,6 +2146,13 @@ main(int argc, char *argv[])
 						case 7: goto startpos; /* home: urxvt */
 						case 8: goto endpos;   /* end: urxvt */
 						}
+					} else if (ch == 'z') { /* SUN: ESC [ num z */
+						switch (i) {
+						case 214: goto startpos; /* home */
+						case 216: goto prevpage; /* page up */
+						case 220: goto endpos;   /* end */
+						case 222: goto nextpage; /* page down */
+						}
 					}
 					break;
 				}
