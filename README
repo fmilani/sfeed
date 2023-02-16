@@ -1077,6 +1077,8 @@ sfeed.c contains definitions to parse XML tags and map them to sfeed(5) TSV
 fields. Parsed RSS and Atom tag names are first stored as a TagId, which is a
 number.  This TagId is then mapped to the output field index.
 
+Steps to modify the code:
+
 * Add a new TagId enum for the tag.
 
 * (optional) Add a new FeedField* enum for the new output field or you can map
@@ -1100,7 +1102,7 @@ number.  This TagId is then mapped to the output field index.
 
 * (optional) Print the new field in the printfields() function.
 
-Below is a patch example to add the MRSS "media:content" field as a new field:
+Below is a patch example to add the MRSS "media:content" tag as a new field:
 
 diff --git a/sfeed.c b/sfeed.c
 --- a/sfeed.c
