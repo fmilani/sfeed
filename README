@@ -251,8 +251,8 @@ output example:
 
 - - -
 
-Make sure your sfeedrc config file exists, see sfeedrc.example. To update your
-feeds (configfile argument is optional):
+Make sure your sfeedrc config file exists, see the sfeedrc.example file. To
+update your feeds (configfile argument is optional):
 
 	sfeed_update "configfile"
 
