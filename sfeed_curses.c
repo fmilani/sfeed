@@ -1791,6 +1791,7 @@ item_row_get(struct pane *p, off_t pos)
 		if ((linelen = getline(&line, &linesize, f->fp)) <= 0) {
 			if (ferror(f->fp))
 				die("getline: %s", f->path);
+			free(line);
 			return NULL;
 		}
 
