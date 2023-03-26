@@ -613,8 +613,8 @@ parsetime(const char *s, long long *tp)
 		for (v = 0, i = 0; i < 4 && ISDIGIT((unsigned char)*s); s++, i++)
 			v = (v * 10) + (*s - '0');
 		/* obsolete short year: RFC2822 4.3 */
-		if (i <= 3)
-			v += (v >= 0 && v <= 49) ? 2000 : 1900;
+		if (i == 2 || i == 3)
+			v += (i == 2 && v >= 0 && v <= 49) ? 2000 : 1900;
 		va[0] = v; /* year */
 		for (; ISSPACE((unsigned char)*s); s++)
 			;
