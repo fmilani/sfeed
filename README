@@ -165,7 +165,7 @@ OS tested
 - Windows (cygwin gcc + mintty, mingw).
 - HaikuOS
 - SerenityOS
-- FreeDOS (djgpp).
+- FreeDOS (djgpp, Open Watcom).
 - FUZIX (sdcc -mz80, with the sfeed parser program).
 
 
