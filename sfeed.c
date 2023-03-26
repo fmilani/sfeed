@@ -475,7 +475,7 @@ datetounix(long long year, int mon, int day, int hour, int min, int sec)
 			}
 		}
 		leaps += 97 * cycles + 24 * centuries - is_leap;
-		t = (year - 100) * 31536000LL + leaps * 86400LL + 946684800 + 86400;
+		t = ((year - 100) * 31536000LL) + (leaps * 86400LL) + 946771200LL;
 	}
 	t += secs_through_month[mon];
 	if (is_leap && mon >= 2)
