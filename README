@@ -742,9 +742,9 @@ sfeed_update_xargs shellscript:
 	}
 	
 	# fetch feeds and store in temporary directory.
-	sfeedtmpdir="$(mktemp -d '/tmp/sfeed_XXXXXX')"
+	sfeedtmpdir="$(mktemp -d '/tmp/sfeed_XXXXXX')" || exit 1
 	mkdir -p "${sfeedtmpdir}/feeds"
-	touch "${sfeedtmpdir}/ok"
+	touch "${sfeedtmpdir}/ok" || exit 1
 	# make sure path exists.
 	mkdir -p "${sfeedpath}"
 	# print feeds for parallel processing with xargs.
@@ -841,7 +841,7 @@ arguments are specified then the data is read from stdin.
 	
 	# ...else parent mode:
 	
-	tmp=$(mktemp)
+	tmp="$(mktemp)" || exit 1
 	trap "rm -f ${tmp}" EXIT
 	
 	[ -f "${cachefile}" ] || touch "${cachefile}"
@@ -1188,7 +1188,7 @@ Example of a `markallread.sh` shellscript to mark all URLs as read:
 
 	#!/bin/sh
 	# mark all items/URLs as read.
-	tmp=$(mktemp)
+	tmp="$(mktemp)" || exit 1
 	(cat ~/.sfeed/urls; cut -f 3 ~/.sfeed/feeds/*) | \
 	awk '!x[$0]++' > "$tmp" &&
 	mv "$tmp" ~/.sfeed/urls &&
