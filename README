@@ -146,8 +146,8 @@ sfeed supports a subset of XML 1.0 and a subset of:
 - MediaRSS extensions (media:).
 - Dublin Core extensions (dc:).
 
-Other formats like JSONfeed, twtxt or certain RSS/Atom extensions are supported
-by converting them to RSS/Atom or to the sfeed(5) format directly.
+Other formats like JSON Feed, twtxt or certain RSS/Atom extensions are
+supported by converting them to RSS/Atom or to the sfeed(5) format directly.
 
 
 OS tested
