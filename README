@@ -771,7 +771,7 @@ arguments are specified then the data is read from stdin.
 
 	#!/bin/sh
 	# sfeed_download: downloader for URLs and enclosures in sfeed(5) files.
-	# Dependencies: awk, curl, flock, xargs (-P), youtube-dl.
+	# Dependencies: awk, curl, flock, xargs (-P), yt-dlp.
 	
 	cachefile="${SFEED_CACHEFILE:-$HOME/.sfeed/downloaded_urls}"
 	jobs="${SFEED_JOBS:-4}"
@@ -791,7 +791,7 @@ arguments are specified then the data is read from stdin.
 	fetch() {
 		case "$1" in
 		*youtube.com*)
-			youtube-dl "$1";;
+			yt-dlp "$1";;
 		*.flac|*.ogg|*.m3u|*.m3u8|*.m4a|*.mkv|*.mp3|*.mp4|*.wav|*.webm)
 			# allow 2 redirects, hide User-Agent, connect timeout is 15 seconds.
 			curl -O -L --max-redirs 2 -H "User-Agent:" -f -s --connect-timeout 15 "$1";;
