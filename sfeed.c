@@ -432,10 +432,13 @@ string_print_timestamp(String *s)
 		printf("%lld", t);
 }
 
-/* Convert time fields. Returns a UNIX timestamp. */
+/* Convert time fields. Returns a signed (atleast) 64-bit UNIX timestamp.
+   Parameters should be passed as they are in a struct tm:
+   that is: year = year - 1900, month = month - 1. */
 static long long
 datetounix(long long year, int mon, int day, int hour, int min, int sec)
 {
+	/* seconds in a month in a regular (non-leap) year */
 	static const long secs_through_month[] = {
 		0, 31 * 86400, 59 * 86400, 90 * 86400,
 		120 * 86400, 151 * 86400, 181 * 86400, 212 * 86400,
@@ -443,7 +446,9 @@ datetounix(long long year, int mon, int day, int hour, int min, int sec)
 	int is_leap = 0, cycles, centuries = 0, leaps = 0, rem;
 	long long t;
 
+	/* optimization: handle common range year 1902 up to and including 2038 */
 	if (year - 2ULL <= 136) {
+		/* amount of leap days relative to 1970: every 4 years */
 		leaps = (year - 68) >> 2;
 		if (!((year - 68) & 3)) {
 			leaps--;
@@ -451,8 +456,11 @@ datetounix(long long year, int mon, int day, int hour, int min, int sec)
 		} else {
 			is_leap = 0;
 		}
-		t = 31536000 * (year - 70) + 86400 * leaps;
+		t = 31536000 * (year - 70) + (86400 * leaps); /* 365 * 86400 = 31536000 */
 	} else {
+		/* general leap year calculation:
+		   leap years occur mostly every 4 years but every 100 years
+		   a leap year is skipped unless the year is divisible by 400 */
 		cycles = (year - 100) / 400;
 		rem = (year - 100) % 400;
 		if (rem < 0) {
@@ -474,7 +482,10 @@ datetounix(long long year, int mon, int day, int hour, int min, int sec)
 				is_leap = !rem;
 			}
 		}
-		leaps += 97 * cycles + 24 * centuries - is_leap;
+		leaps += (97 * cycles) + (24 * centuries) - is_leap;
+
+		/* adjust 8 leap days from 1970 up to and including 2000:
+		   ((30 * 365) + 8) * 86400 = 946771200 */
 		t = ((year - 100) * 31536000LL) + (leaps * 86400LL) + 946771200LL;
 	}
 	t += secs_through_month[mon];
