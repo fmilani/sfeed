@@ -95,7 +95,7 @@ printfeed(FILE *fp, const char *feedname)
 				/* NOTE: an RSS/Atom viewer may or may not format
 				   whitespace such as newlines.
 				   Workaround: type="html" and <![CDATA[<pre></pre>]]> */
-				fputs("\t<content type=\"text\">", stdout);
+				fputs("\t<content>", stdout);
 			}
 			printcontent(fields[FieldContent]);
 			fputs("</content>\n", stdout);
@@ -132,7 +132,7 @@ main(int argc, char *argv[])
 
 	fputs("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
 	      "<feed xmlns=\"http://www.w3.org/2005/Atom\">\n"
-	      "\t<title type=\"text\">Newsfeed</title>\n"
+	      "\t<title>Newsfeed</title>\n"
 	      "\t<author><name>sfeed</name></author>\n", stdout);
 	printf("\t<id>urn:newsfeed:%lld</id>\n"
 	       "\t<updated>%04d-%02d-%02dT%02d:%02d:%02dZ</updated>\n",
