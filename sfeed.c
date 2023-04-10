@@ -754,7 +754,7 @@ static void
 xmlattrentity(XMLParser *p, const char *t, size_t tl, const char *n, size_t nl,
               const char *data, size_t datalen)
 {
-	char buf[16];
+	char buf[8];
 	int len;
 
 	/* handles transforming inline XML to data */
@@ -831,7 +831,7 @@ xmldata(XMLParser *p, const char *s, size_t len)
 static void
 xmldataentity(XMLParser *p, const char *data, size_t datalen)
 {
-	char buf[16];
+	char buf[8];
 	int len;
 
 	if (!ctx.field)
