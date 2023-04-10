@@ -51,6 +51,7 @@ BIN = \
 	sfeed_frames\
 	sfeed_gopher\
 	sfeed_html\
+	sfeed_json\
 	sfeed_mbox\
 	sfeed_opml_import\
 	sfeed_plain\

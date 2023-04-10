@@ -186,6 +186,7 @@ sfeed_curses      - Format feed data (TSV) to a curses interface.
 sfeed_frames      - Format feed data (TSV) to HTML file(s) with frames.
 sfeed_gopher      - Format feed data (TSV) to Gopher files.
 sfeed_html        - Format feed data (TSV) to HTML.
+sfeed_json        - Format feed data (TSV) to JSON Feed.
 sfeed_opml_export - Generate an OPML XML file from a sfeedrc config file.
 sfeed_opml_import - Generate a sfeedrc config file from an OPML XML file.
 sfeed_markread    - Mark items as read/unread, for use with sfeed_curses.
