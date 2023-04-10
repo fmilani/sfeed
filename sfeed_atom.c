@@ -132,8 +132,7 @@ main(int argc, char *argv[])
 
 	fputs("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
 	      "<feed xmlns=\"http://www.w3.org/2005/Atom\">\n"
-	      "\t<title>Newsfeed</title>\n"
-	      "\t<author><name>sfeed</name></author>\n", stdout);
+	      "\t<title>Newsfeed</title>\n", stdout);
 	printf("\t<id>urn:newsfeed:%lld</id>\n"
 	       "\t<updated>%04d-%02d-%02dT%02d:%02d:%02dZ</updated>\n",
 	       (long long)now,

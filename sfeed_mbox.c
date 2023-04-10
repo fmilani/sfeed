@@ -82,7 +82,7 @@ printfeed(FILE *fp, const char *feedname)
 			printf("Date: %s\n", dtimebuf); /* invalid/missing: use current time */
 		}
 
-		printf("From: %s <sfeed@>\n", fields[FieldAuthor][0] ? fields[FieldAuthor] : feedname);
+		printf("From: %s <anonymous@>\n", fields[FieldAuthor][0] ? fields[FieldAuthor] : feedname);
 		printf("To: %s <%s@%s>\n", user, user, host);
 		printf("Subject: %s\n", fields[FieldTitle]);
 		printf("Message-ID: <%s%s%llu@%s>\n",
