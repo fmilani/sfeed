@@ -383,7 +383,7 @@ string_print_trimmed_multi(String *s)
 	}
 }
 
-/* Print URL, if it's a relative URL then it uses the global `baseurl`. */
+/* Print URL, if it is a relative URL then it uses the global `baseurl`. */
 static void
 printuri(char *s)
 {
@@ -409,7 +409,7 @@ printuri(char *s)
 	*e = c; /* restore NUL byte to original character */
 }
 
-/* Print URL, if it's a relative URL then it uses the global `baseurl`. */
+/* Print URL, if it is a relative URL then it uses the global `baseurl`. */
 static void
 string_print_uri(String *s)
 {
@@ -432,7 +432,7 @@ string_print_timestamp(String *s)
 		printf("%lld", t);
 }
 
-/* Convert time fields. Returns a signed (atleast) 64-bit UNIX timestamp.
+/* Convert time fields. Returns a signed (at least) 64-bit UNIX timestamp.
    Parameters should be passed as they are in a struct tm:
    that is: year = year - 1900, month = month - 1. */
 static long long
@@ -907,7 +907,7 @@ xmltagstartparsed(XMLParser *p, const char *t, size_t tl, int isshort)
 		return;
 	}
 
-	/* set tag type based on it's attribute value */
+	/* set tag type based on its attribute value */
 	if (ctx.tag.id == RSSTagGuid) {
 		/* if empty the default is "true" */
 		if (!attrispermalink.len ||
@@ -1018,7 +1018,7 @@ xmltagend(XMLParser *p, const char *t, size_t tl, int isshort)
 	}
 
 	/* temporary string: for fields that cannot be processed
-	   directly and need more context, for example by it's tag
+	   directly and need more context, for example by its tag
 	   attributes, like the Atom link rel="alternate|enclosure". */
 	if (tmpstr.len && ctx.field) {
 		if (ISFEEDFIELDMULTI(fieldmap[ctx.tag.id])) {

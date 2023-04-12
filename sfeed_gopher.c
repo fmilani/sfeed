@@ -64,7 +64,7 @@ printfeed(FILE *fpitems, FILE *fpin, struct feed *f)
 
 		if (fields[FieldLink][0]) {
 			itemtype = 'h';
-			/* if it's a gopher URL then change it into a DirEntity */
+			/* if it is a gopher URL then change it into a DirEntity */
 			if (!strncmp(fields[FieldLink], "gopher://", 9) &&
 			    uri_parse(fields[FieldLink], &u) != -1) {
 				itemhost = u.host;

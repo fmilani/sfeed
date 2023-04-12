@@ -38,7 +38,7 @@ Initial setup:
 	cp sfeedrc.example "$HOME/.sfeed/sfeedrc"
 
 Edit the sfeedrc(5) configuration file and change any RSS/Atom feeds. This file
-is included and evaluated as a shellscript for sfeed_update, so it's functions
+is included and evaluated as a shellscript for sfeed_update, so its functions
 and behaviour can be overridden:
 
 	$EDITOR "$HOME/.sfeed/sfeedrc"
