@@ -22,6 +22,8 @@ printcontent(const char *s)
 		case '&':  fputs("&amp;",  stdout); break;
 		case '"':  fputs("&quot;", stdout); break;
 		case '\\':
+			if (*(s + 1) == '\0')
+				break;
 			s++;
 			switch (*s) {
 			case 'n':  putchar('\n'); break;

@@ -37,6 +37,8 @@ escapefrom:
 	for (; *s; s++) {
 		switch (*s) {
 		case '\\':
+			if (*(s + 1) == '\0')
+				break;
 			s++;
 			switch (*s) {
 			case 'n':

@@ -16,6 +16,8 @@ printcontent(const char *s)
 	for (; *s; s++) {
 		switch (*s) {
 		case '\\':
+			if (*(s + 1) == '\0')
+				break;
 			s++;
 			switch (*s) {
 			case 'n':  fputs("\\n",  stdout); break;
