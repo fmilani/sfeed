@@ -103,7 +103,7 @@ static void
 xmlattrentity(XMLParser *p, const char *t, size_t tl, const char *a, size_t al,
               const char *v, size_t vl)
 {
-	char buf[16];
+	char buf[8];
 	int len;
 
 	if (!ishrefattr && !istypeattr)

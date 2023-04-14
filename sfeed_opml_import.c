@@ -70,7 +70,7 @@ static void
 xmlattrentity(XMLParser *p, const char *t, size_t tl, const char *n, size_t nl,
 	const char *v, size_t vl)
 {
-	char buf[16];
+	char buf[8];
 	int len;
 
 	if ((len = xml_entitytostr(v, buf, sizeof(buf))) > 0)
