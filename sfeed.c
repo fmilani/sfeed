@@ -293,7 +293,7 @@ string_append(String *s, const char *data, size_t len)
 		return;
 
 	if (s->len >= SIZE_MAX - len) {
-		errno = EOVERFLOW;
+		errno = ENOMEM;
 		err(1, "realloc");
 	}
 
