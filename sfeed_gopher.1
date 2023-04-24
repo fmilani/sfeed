@@ -32,6 +32,7 @@ written to stdout and no files are written.
 .Pp
 Items with a timestamp from the last day compared to the system time at the
 time of formatting are counted and marked as new.
+This value might be overridden through environment variables.
 Items are marked as new with the prefix "N" at the start of the line.
 .Sh ENVIRONMENT
 .Bl -tag -width Ds
@@ -45,6 +46,9 @@ The default is "127.0.0.1".
 .It Ev SFEED_GOPHER_PORT
 This environment variable can be used as the Gopher Port field.
 The default is "70".
+.It Ev SFEED_NEW_MAX_SECS
+Overwrite the maximum age in seconds to mark feeds as new.
+By default this is 86400, which equals one day.
 .El
 .Sh EXIT STATUS
 .Ex -std

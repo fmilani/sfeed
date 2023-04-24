@@ -30,6 +30,7 @@ arguments are specified then the data is read from stdin and the feed name is
 .Pp
 Items with a timestamp from the last day compared to the system time at the
 time of loading the feed are marked as new and bold.
+This value might be overridden through environment variables.
 There is also an alternative mode available to mark items as read by matching
 it against a list of URLs from a plain-text file.
 Items with an enclosure are marked with a @ symbol.
@@ -207,6 +208,9 @@ SIGWINCH.
 Read and process a sequence of keys as input commands from this environment
 variable first, afterwards it reads from the tty as usual.
 This can be useful to automate certain actions at the start.
+.It Ev SFEED_NEW_MAX_SECS
+Overwrite the maximum age in seconds to mark feeds as new.
+By default this is 86400, which equals one day.
 .It Ev SFEED_PIPER
 A program where the whole TAB-Separated Value line is piped to.
 By default this is "sfeed_content".
