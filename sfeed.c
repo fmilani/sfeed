@@ -470,12 +470,16 @@ datetounix(long long year, int mon, int day, int hour, int min, int sec)
 		if (!rem) {
 			is_leap = 1;
 		} else {
-			if (rem >= 300)
-				centuries = 3, rem -= 300;
-			else if (rem >= 200)
-				centuries = 2, rem -= 200;
-			else if (rem >= 100)
-				centuries = 1, rem -= 100;
+			if (rem >= 300) {
+				centuries = 3;
+				rem -= 300;
+			} else if (rem >= 200) {
+				centuries = 2;
+				rem -= 200;
+			} else if (rem >= 100) {
+				centuries = 1;
+				rem -= 100;
+			}
 			if (rem) {
 				leaps = rem / 4U;
 				rem %= 4U;
