@@ -290,9 +290,9 @@ Just like the other format programs included in sfeed you can run it like this:
 	sfeed_curses < ~/.sfeed/feeds/xkcd
 
 By default sfeed_curses marks the items of the last day as new/bold. This limit
-might be overridden by setting the environment variable $SFEED_NEW_MAX_SECS to
-the desired maximum in seconds. To manage read/unread items in a different way
-a plain-text file with a list of the read URLs can be used. To enable this
+might be overridden by setting the environment variable $SFEED_NEW_AGE to the
+desired maximum in seconds. To manage read/unread items in a different way a
+plain-text file with a list of the read URLs can be used. To enable this
 behaviour the path to this file can be specified by setting the environment
 variable $SFEED_URL_FILE to the URL file:
 

@@ -318,6 +318,24 @@ strtotime(const char *s, time_t *t)
 	return 0;
 }
 
+time_t
+getcomparetime(void)
+{
+	time_t now, t;
+	char *p;
+
+	if ((now = time(NULL)) == (time_t)-1)
+		return (time_t)-1;
+
+	if ((p = getenv("SFEED_NEW_AGE"))) {
+		if (strtotime(p, &t) == -1)
+			return (time_t)-1;
+		return now - t;
+	}
+
+	return now - 86400; /* 1 day is old news */
+}
+
 /* Escape characters below as HTML 2.0 / XML 1.0. */
 void
 xmlencode(const char *s, FILE *fp)

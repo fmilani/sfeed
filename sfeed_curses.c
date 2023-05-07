@@ -191,7 +191,6 @@ static int plumberia = 0; /* env variable: $SFEED_PLUMBER_INTERACTIVE */
 static int piperia = 1; /* env variable: $SFEED_PIPER_INTERACTIVE */
 static int yankeria = 0; /* env variable: $SFEED_YANKER_INTERACTIVE */
 static int lazyload = 0; /* env variable: $SFEED_LAZYLOAD */
-static int newmaxsecs = 86400; /* env variable: $SFEED_NEW_MAX_SECS */
 
 int
 ttywritef(const char *fmt, ...)
@@ -1321,9 +1320,8 @@ feeds_load(struct feed *feeds, size_t nfeeds)
 	size_t i;
 
 	errno = 0;
-	if ((comparetime = time(NULL)) == (time_t)-1)
-		die("time");
-	comparetime -= newmaxsecs;
+	if ((comparetime = getcomparetime()) == (time_t)-1)
+		die("getcomparetime");
 
 	for (i = 0; i < nfeeds; i++) {
 		f = &feeds[i];
@@ -1967,7 +1965,7 @@ main(int argc, char *argv[])
 	struct pane *p;
 	struct feed *f;
 	struct row *row;
-	char *name, *tmp, *endptr;
+	char *name, *tmp;
 	char *search = NULL; /* search text */
 	int button, ch, fd, i, keymask, release, x, y;
 	off_t pos;
@@ -1997,11 +1995,6 @@ main(int argc, char *argv[])
 		markunreadcmd = tmp;
 	if ((tmp = getenv("SFEED_LAZYLOAD")))
 		lazyload = !strcmp(tmp, "1");
-	if ((tmp = getenv("SFEED_NEW_MAX_SECS"))) {
-		newmaxsecs = (int) strtol(tmp, &endptr, 10);
-		if (*tmp == '\0' || *endptr != '\0' || newmaxsecs <= 0)
-			err(1, "cannot parse $SFEED_NEW_MAX_SECS");
-  }
 	urlfile = getenv("SFEED_URL_FILE"); /* can be NULL */
 	cmdenv = getenv("SFEED_AUTOCMD"); /* can be NULL */
 

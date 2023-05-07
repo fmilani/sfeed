@@ -122,9 +122,8 @@ int
 main(int argc, char *argv[])
 {
 	FILE *fpitems, *fpindex, *fp;
-	char *name, *p, *tmp, *endptr;
+	char *name, *p;
 	int i;
-	long l;
 
 	if (argc == 1) {
 		if (pledge("stdio", NULL) == -1)
@@ -138,18 +137,8 @@ main(int argc, char *argv[])
 			err(1, "pledge");
 	}
 
-	if ((comparetime = time(NULL)) == (time_t)-1)
-		errx(1, "time");
-
-	if ((tmp = getenv("SFEED_NEW_MAX_SECS"))) {
-		l = strtol(tmp, &endptr, 10);
-		if (*tmp == '\0' || *endptr != '\0' || l <= 0)
-			err(1, "cannot parse $SFEED_NEW_MAX_SECS");
-		comparetime -= l;
-	} else {
-		/* 1 day is old news */
-		comparetime -= 86400;
-	}
+	if ((comparetime = getcomparetime()) == (time_t)-1)
+		errx(1, "getcomparetime");
 
 	if ((p = getenv("SFEED_GOPHER_HOST")))
 		host = p;
