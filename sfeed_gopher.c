@@ -7,7 +7,6 @@
 
 #include "util.h"
 
-static struct feed f;
 static char *prefixpath = "/", *host = "127.0.0.1", *port = "70"; /* default */
 static char *line;
 static size_t linesize;
@@ -121,6 +120,7 @@ printfeed(FILE *fpitems, FILE *fpin, struct feed *f)
 int
 main(int argc, char *argv[])
 {
+	struct feed f;
 	FILE *fpitems, *fpindex, *fp;
 	char *name, *p;
 	int i;
