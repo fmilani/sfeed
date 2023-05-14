@@ -175,7 +175,7 @@ static struct feed *feeds;
 static struct feed *curfeed;
 static size_t nfeeds; /* amount of feeds */
 static time_t comparetime;
-struct urls urls;
+static struct urls urls;
 static char *urlfile;
 
 volatile sig_atomic_t state_sigchld = 0, state_sighup = 0, state_sigint = 0;
