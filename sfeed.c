@@ -504,10 +504,10 @@ datetounix(long long year, int mon, int day, int hour, int min, int sec)
 }
 
 /* Get timezone from string, return time offset in seconds from UTC.
- * NOTE: only parses timezones in RFC-822, many other timezone names are
+ * NOTE: only parses timezones in RFC 822, many other timezone names are
  * ambiguous anyway.
- * ANSI and military zones are defined wrong in RFC822 and are unsupported,
- * see note on RFC2822 4.3 page 32. */
+ * ANSI and military zones are defined wrong in RFC 822 and are unsupported,
+ * see note on RFC 2822 4.3 page 32. */
 static long
 gettzoffset(const char *s)
 {
@@ -627,7 +627,7 @@ parsetime(const char *s, long long *tp)
 			;
 		for (v = 0, i = 0; i < 4 && ISDIGIT((unsigned char)*s); s++, i++)
 			v = (v * 10) + (*s - '0');
-		/* obsolete short year: RFC2822 4.3 */
+		/* obsolete short year: RFC 2822 4.3 */
 		if (i == 2 || i == 3)
 			v += (i == 2 && v >= 0 && v <= 49) ? 2000 : 1900;
 		va[0] = v; /* year */
