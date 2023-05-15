@@ -130,7 +130,7 @@ main(int argc, char *argv[])
 	if ((now = time(NULL)) == (time_t)-1)
 		errx(1, "time");
 	if (!(tm = gmtime_r(&now, &tmnow)))
-		err(1, "gmtime_r");
+		err(1, "gmtime_r: can't get current time");
 
 	fputs("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
 	      "<feed xmlns=\"http://www.w3.org/2005/Atom\">\n"
