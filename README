@@ -141,7 +141,7 @@ sfeed supports a subset of XML 1.0 and a subset of:
 
 - Atom 1.0 (RFC 4287): https://datatracker.ietf.org/doc/html/rfc4287
 - Atom 0.3 (draft, historic).
-- RSS 0.91+.
+- RSS 0.90+.
 - RDF (when used with RSS).
 - MediaRSS extensions (media:).
 - Dublin Core extensions (dc:).
