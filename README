@@ -336,7 +336,7 @@ filtering items per feed. It can be used to shorten URLs, filter away
 advertisements, strip tracking parameters and more.
 
 	# filter fields.
-	# filter(name)
+	# filter(name, url)
 	filter() {
 		case "$1" in
 		"tweakers")

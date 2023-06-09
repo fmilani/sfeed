@@ -71,7 +71,7 @@ parse() {
 }
 
 # filter fields.
-# filter(name)
+# filter(name, url)
 filter() {
 	cat
 }
@@ -83,7 +83,7 @@ merge() {
 }
 
 # order by timestamp (descending).
-# order(name)
+# order(name, url)
 order() {
 	sort -t '	' -k1rn,1
 }
@@ -124,7 +124,7 @@ _feed() {
 	fi
 	rm -f "${tmpfeedfile}.utf8"
 
-	if ! filter "${name}" < "${tmpfeedfile}.tsv" > "${tmpfeedfile}.filter"; then
+	if ! filter "${name}" "${feedurl}" < "${tmpfeedfile}.tsv" > "${tmpfeedfile}.filter"; then
 		log_error "${name}" "FAIL (FILTER)"
 		return 1
 	fi
@@ -142,7 +142,7 @@ _feed() {
 	fi
 	rm -f "${tmpfeedfile}.filter"
 
-	if ! order "${name}" < "${tmpfeedfile}.merge" > "${tmpfeedfile}.order"; then
+	if ! order "${name}" "${feedurl}" < "${tmpfeedfile}.merge" > "${tmpfeedfile}.order"; then
 		log_error "${name}" "FAIL (ORDER)"
 		return 1
 	fi

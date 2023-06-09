@@ -1,4 +1,4 @@
-.Dd January 18, 2023
+.Dd June 9, 2023
 .Dt SFEEDRC 5
 .Os
 .Sh NAME
@@ -101,13 +101,15 @@ URL of the feed.
 Base URL of the feed links.
 This argument allows to fix relative item links.
 .El
-.It Fn filter "name"
+.It Fn filter "name" "url"
 Filter
 .Xr sfeed 5
 data from stdin and write it to stdout, its arguments are:
 .Bl -tag -width Ds
 .It Fa name
 Feed name.
+.It Fa url
+URL of the feed.
 .El
 .It Fn merge "name" "oldfile" "newfile"
 Merge
@@ -121,13 +123,15 @@ Old file.
 .It Fa newfile
 New file.
 .El
-.It Fn order "name"
+.It Fn order "name" "url"
 Sort
 .Xr sfeed 5
 data from stdin and write it to stdout, its arguments are:
 .Bl -tag -width Ds
 .It Fa name
 Feed name.
+.It Fa url
+URL of the feed.
 .El
 .El
 .Sh EXAMPLES
