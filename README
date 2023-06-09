@@ -679,8 +679,8 @@ additional metadata from the previous request.
 CDNs blocking requests due to a missing HTTP User-Agent request header
 
 sfeed_update will not send the "User-Agent" header by default for privacy
-reasons.  Some CDNs like Cloudflare don't like this and will block such HTTP
-requests.
+reasons.  Some CDNs like Cloudflare or websites like Reddit.com don't like this
+and will block such HTTP requests.
 
 A custom User-Agent can be set by using the curl -H option, like so:
 
