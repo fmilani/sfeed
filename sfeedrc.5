@@ -1,4 +1,4 @@
-.Dd June 9, 2023
+.Dd July 1, 2023
 .Dt SFEEDRC 5
 .Os
 .Sh NAME
@@ -167,7 +167,7 @@ file:
 # fetch(name, url, feedfile)
 fetch() {
 	# allow for 1 redirect, set User-Agent, timeout is 15 seconds.
-	curl -L --max-redirs 1 -H "User-Agent: sfeed" -f -s -m 15 \e
+	curl -L --max-redirs 1 -H "User-Agent: 007" -f -s -m 15 \e
 		"$2" 2>/dev/null
 }
 .Ed
