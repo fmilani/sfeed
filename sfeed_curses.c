@@ -2337,6 +2337,7 @@ nextpage:
 			if (selpane == PaneItems && panes[selpane].nrows) {
 				p = &panes[selpane];
 				markread(p, p->pos, p->pos, ch == 'r');
+				pane_scrolln(&panes[selpane], +1);
 			}
 			break;
 		case 's': /* toggle layout between monocle or non-monocle */
