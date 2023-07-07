@@ -1,4 +1,4 @@
-.Dd July 1, 2023
+.Dd July 7, 2023
 .Dt SFEEDRC 5
 .Os
 .Sh NAME
@@ -37,6 +37,9 @@ Name of the feed, this is also used as the filename for the TAB-separated
 feed file.
 The feed name cannot contain the '/' character because it is a path separator,
 they will be replaced with '_'.
+Each
+.Fa name
+should be unique.
 .It Fa feedurl
 URL to fetch the RSS/Atom data from, usually a HTTP or HTTPS URL.
 .It Op Fa basesiteurl
