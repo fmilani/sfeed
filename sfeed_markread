@@ -18,7 +18,7 @@ read)
 	cat >> "${urlfile}"
 	;;
 unread)
-	tmp=$(mktemp)
+	tmp="$(mktemp)" || exit 1
 	trap "rm -f ${tmp}" EXIT
 	[ -f "${urlfile}" ] || touch "${urlfile}" 2>/dev/null
 	LC_ALL=C awk -F '\t' '
