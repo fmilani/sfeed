@@ -52,7 +52,7 @@ main(void)
 	parser.xmlattrend = xmlattrend;
 	parser.xmltagstart = xmltagstart;
 
-	/* NOTE: getnext is defined in xml.h for inline optimization */
+	/* NOTE: GETNEXT is defined in xml.h for inline optimization */
 	xml_parse(&parser);
 
 	checkfileerror(stdin, "<stdin>", 'r');

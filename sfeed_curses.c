@@ -1875,7 +1875,7 @@ markread(struct pane *p, off_t from, off_t to, int isread)
 		_exit(status);
 	default:
 		/* waitpid() and block on process status change,
-		   fail if exit statuscode was unavailable or non-zero */
+		   fail if the exit status code was unavailable or non-zero */
 		if (waitpid(pid, &status, 0) <= 0 || status)
 			break;
 

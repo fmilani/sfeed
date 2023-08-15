@@ -724,8 +724,8 @@ xmlattr(XMLParser *p, const char *t, size_t tl, const char *n, size_t nl,
 	if (!ctx.tag.id)
 		return;
 
-	/* content-type may be: Atom: text, xhtml, html or mime-type.
-	   MRSS (media:description): plain, html. */
+	/* content-type may be for Atom: text, xhtml, html or a mime-type.
+	   for MRSS (media:description): plain, html. */
 	if (ISCONTENTTAG(ctx)) {
 		if (isattr(n, nl, STRP("type")))
 			string_append(&attrtype, v, vl);
@@ -1073,7 +1073,7 @@ main(int argc, char *argv[])
 	parser.xmltagstart = xmltagstart;
 	parser.xmltagstartparsed = xmltagstartparsed;
 
-	/* NOTE: getnext is defined in xml.h for inline optimization */
+	/* NOTE: GETNEXT is defined in xml.h for inline optimization */
 	xml_parse(&parser);
 
 	checkfileerror(stdin, "<stdin>", 'r');
