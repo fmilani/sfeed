@@ -11,7 +11,7 @@ static size_t linesize;
 static time_t comparetime;
 
 /* Escape characters in gopher, CR and LF are ignored */
-void
+static void
 gophertext(FILE *fp, const char *s)
 {
 	for (; *s; s++) {
