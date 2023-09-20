@@ -139,18 +139,18 @@ struct items {
 	size_t cap;         /* available capacity */
 };
 
-void alldirty(void);
-void cleanup(void);
-void draw(void);
-int getsidebarsize(void);
-void markread(struct pane *, off_t, off_t, int);
-void pane_draw(struct pane *);
-void sighandler(int);
-void updategeom(void);
-void updatesidebar(void);
-void urls_free(struct urls *);
-int urls_hasmatch(struct urls *, const char *);
-void urls_read(struct urls *, const char *);
+static void alldirty(void);
+static void cleanup(void);
+static void draw(void);
+static int getsidebarsize(void);
+static void markread(struct pane *, off_t, off_t, int);
+static void pane_draw(struct pane *);
+static void sighandler(int);
+static void updategeom(void);
+static void updatesidebar(void);
+static void urls_free(struct urls *);
+static int urls_hasmatch(struct urls *, const char *);
+static void urls_read(struct urls *, const char *);
 
 static struct linebar linebar;
 static struct statusbar statusbar;
@@ -190,7 +190,7 @@ static int piperia = 1; /* env variable: $SFEED_PIPER_INTERACTIVE */
 static int yankeria = 0; /* env variable: $SFEED_YANKER_INTERACTIVE */
 static int lazyload = 0; /* env variable: $SFEED_LAZYLOAD */
 
-int
+static int
 ttywritef(const char *fmt, ...)
 {
 	va_list ap;
@@ -204,7 +204,7 @@ ttywritef(const char *fmt, ...)
 	return n;
 }
 
-int
+static int
 ttywrite(const char *s)
 {
 	if (!s)
@@ -213,7 +213,7 @@ ttywrite(const char *s)
 }
 
 /* Print to stderr, call cleanup() and _exit(). */
-__dead void
+__dead static void
 die(const char *fmt, ...)
 {
 	va_list ap;
@@ -234,7 +234,7 @@ die(const char *fmt, ...)
 	_exit(1);
 }
 
-void *
+static void *
 erealloc(void *ptr, size_t size)
 {
 	void *p;
@@ -244,7 +244,7 @@ erealloc(void *ptr, size_t size)
 	return p;
 }
 
-void *
+static void *
 ecalloc(size_t nmemb, size_t size)
 {
 	void *p;
@@ -254,7 +254,7 @@ ecalloc(size_t nmemb, size_t size)
 	return p;
 }
 
-char *
+static char *
 estrdup(const char *s)
 {
 	char *p;
@@ -265,7 +265,7 @@ estrdup(const char *s)
 }
 
 /* Wrapper for tparm() which allows NULL parameter for str. */
-char *
+static char *
 tparmnull(const char *str, long p1, long p2, long p3, long p4, long p5, long p6,
           long p7, long p8, long p9)
 {
@@ -276,7 +276,7 @@ tparmnull(const char *str, long p1, long p2, long p3, long p4, long p5, long p6,
 }
 
 /* Counts column width of character string. */
-size_t
+static size_t
 colw(const char *s)
 {
 	wchar_t wc;
@@ -308,7 +308,7 @@ colw(const char *s)
 
 /* Format `len` columns of characters. If string is shorter pad the rest
    with characters `pad`. */
-int
+static int
 utf8pad(char *buf, size_t bufsiz, const char *s, size_t len, int pad)
 {
 	wchar_t wc;
@@ -373,13 +373,13 @@ utf8pad(char *buf, size_t bufsiz, const char *s, size_t len, int pad)
 	return 0;
 }
 
-void
+static void
 resetstate(void)
 {
 	ttywrite("\x1b""c"); /* rs1: reset title and state */
 }
 
-void
+static void
 updatetitle(void)
 {
 	unsigned long totalnew = 0, total = 0;
@@ -392,32 +392,32 @@ updatetitle(void)
 	ttywritef("\x1b]2;(%lu/%lu) - sfeed_curses\x1b\\", totalnew, total);
 }
 
-void
+static void
 appmode(int on)
 {
 	ttywrite(tparmnull(on ? enter_ca_mode : exit_ca_mode, 0, 0, 0, 0, 0, 0, 0, 0, 0));
 }
 
-void
+static void
 mousemode(int on)
 {
 	ttywrite(on ? "\x1b[?1000h" : "\x1b[?1000l"); /* xterm X10 mouse mode */
 	ttywrite(on ? "\x1b[?1006h" : "\x1b[?1006l"); /* extended SGR mouse mode */
 }
 
-void
+static void
 cursormode(int on)
 {
 	ttywrite(tparmnull(on ? cursor_normal : cursor_invisible, 0, 0, 0, 0, 0, 0, 0, 0, 0));
 }
 
-void
+static void
 cursormove(int x, int y)
 {
 	ttywrite(tparmnull(cursor_address, y, x, 0, 0, 0, 0, 0, 0, 0));
 }
 
-void
+static void
 cursorsave(void)
 {
 	/* do not save the cursor if it won't be restored anyway */
@@ -425,7 +425,7 @@ cursorsave(void)
 		ttywrite(tparmnull(save_cursor, 0, 0, 0, 0, 0, 0, 0, 0, 0));
 }
 
-void
+static void
 cursorrestore(void)
 {
 	/* if the cursor cannot be hidden then move to a consistent position */
@@ -435,7 +435,7 @@ cursorrestore(void)
 		cursormove(0, 0);
 }
 
-void
+static void
 attrmode(int mode)
 {
 	switch (mode) {
@@ -456,19 +456,19 @@ attrmode(int mode)
 	}
 }
 
-void
+static void
 cleareol(void)
 {
 	ttywrite(tparmnull(clr_eol, 0, 0, 0, 0, 0, 0, 0, 0, 0));
 }
 
-void
+static void
 clearscreen(void)
 {
 	ttywrite(tparmnull(clear_screen, 0, 0, 0, 0, 0, 0, 0, 0, 0));
 }
 
-void
+static void
 cleanup(void)
 {
 	struct sigaction sa;
@@ -497,7 +497,7 @@ cleanup(void)
 	sigaction(SIGWINCH, &sa, NULL);
 }
 
-void
+static void
 win_update(struct win *w, int width, int height)
 {
 	if (width != w->width || height != w->height)
@@ -506,7 +506,7 @@ win_update(struct win *w, int width, int height)
 	w->height = height;
 }
 
-void
+static void
 resizewin(void)
 {
 	struct winsize winsz;
@@ -521,7 +521,7 @@ resizewin(void)
 		alldirty();
 }
 
-void
+static void
 init(void)
 {
 	struct sigaction sa;
@@ -561,7 +561,7 @@ init(void)
 	sigaction(SIGWINCH, &sa, NULL);
 }
 
-void
+static void
 processexit(pid_t pid, int interactive)
 {
 	struct sigaction sa;
@@ -594,7 +594,7 @@ processexit(pid_t pid, int interactive)
    if `interactive` is 1 then cleanup and restore the tty and wait on the
    process.
    if 0 then don't do that and also write stdout and stderr to /dev/null. */
-void
+static void
 pipeitem(const char *cmd, struct item *item, int field, int interactive)
 {
 	FILE *fp;
@@ -634,7 +634,7 @@ pipeitem(const char *cmd, struct item *item, int field, int interactive)
 	}
 }
 
-void
+static void
 forkexec(char *argv[], int interactive)
 {
 	pid_t pid;
@@ -658,7 +658,7 @@ forkexec(char *argv[], int interactive)
 	}
 }
 
-struct row *
+static struct row *
 pane_row_get(struct pane *p, off_t pos)
 {
 	if (pos < 0 || pos >= p->nrows)
@@ -669,7 +669,7 @@ pane_row_get(struct pane *p, off_t pos)
 	return p->rows + pos;
 }
 
-char *
+static char *
 pane_row_text(struct pane *p, struct row *row)
 {
 	/* custom formatter */
@@ -678,7 +678,7 @@ pane_row_text(struct pane *p, struct row *row)
 	return row->text;
 }
 
-int
+static int
 pane_row_match(struct pane *p, struct row *row, const char *s)
 {
 	if (p->row_match)
@@ -686,7 +686,7 @@ pane_row_match(struct pane *p, struct row *row, const char *s)
 	return (strcasestr(pane_row_text(p, row), s) != NULL);
 }
 
-void
+static void
 pane_row_draw(struct pane *p, off_t pos, int selected)
 {
 	struct row *row;
@@ -719,7 +719,7 @@ pane_row_draw(struct pane *p, off_t pos, int selected)
 	cursorrestore();
 }
 
-void
+static void
 pane_setpos(struct pane *p, off_t pos)
 {
 	if (pos < 0)
@@ -743,7 +743,7 @@ pane_setpos(struct pane *p, off_t pos)
 	p->pos = pos;
 }
 
-void
+static void
 pane_scrollpage(struct pane *p, int pages)
 {
 	off_t pos;
@@ -761,13 +761,13 @@ pane_scrollpage(struct pane *p, int pages)
 	}
 }
 
-void
+static void
 pane_scrolln(struct pane *p, int n)
 {
 	pane_setpos(p, p->pos + n);
 }
 
-void
+static void
 pane_setfocus(struct pane *p, int on)
 {
 	if (p->focused != on) {
@@ -776,7 +776,7 @@ pane_setfocus(struct pane *p, int on)
 	}
 }
 
-void
+static void
 pane_draw(struct pane *p)
 {
 	off_t pos, y;
@@ -793,7 +793,7 @@ pane_draw(struct pane *p)
 		pane_row_draw(p, y + pos, (y + pos) == p->pos);
 }
 
-void
+static void
 setlayout(int n)
 {
 	if (layout != LayoutMonocle)
@@ -801,7 +801,7 @@ setlayout(int n)
 	layout = n;
 }
 
-void
+static void
 updategeom(void)
 {
 	int h, w, x = 0, y = 0;
@@ -875,7 +875,7 @@ updategeom(void)
 	alldirty();
 }
 
-void
+static void
 scrollbar_setfocus(struct scrollbar *s, int on)
 {
 	if (s->focused != on) {
@@ -884,7 +884,7 @@ scrollbar_setfocus(struct scrollbar *s, int on)
 	}
 }
 
-void
+static void
 scrollbar_update(struct scrollbar *s, off_t pos, off_t nrows, int pageheight)
 {
 	int tickpos = 0, ticksize = 0;
@@ -909,7 +909,7 @@ scrollbar_update(struct scrollbar *s, off_t pos, off_t nrows, int pageheight)
 	s->ticksize = ticksize;
 }
 
-void
+static void
 scrollbar_draw(struct scrollbar *s)
 {
 	off_t y;
@@ -948,7 +948,7 @@ scrollbar_draw(struct scrollbar *s)
 	cursorrestore();
 }
 
-int
+static int
 readch(void)
 {
 	unsigned char b;
@@ -982,7 +982,7 @@ readch(void)
 	}
 }
 
-char *
+static char *
 lineeditor(void)
 {
 	char *input = NULL;
@@ -1035,7 +1035,7 @@ lineeditor(void)
 	return input;
 }
 
-char *
+static char *
 uiprompt(int x, int y, char *fmt, ...)
 {
 	va_list ap;
@@ -1065,7 +1065,7 @@ uiprompt(int x, int y, char *fmt, ...)
 	return input;
 }
 
-void
+static void
 linebar_draw(struct linebar *b)
 {
 	int i;
@@ -1086,7 +1086,7 @@ linebar_draw(struct linebar *b)
 	cursorrestore();
 }
 
-void
+static void
 statusbar_draw(struct statusbar *s)
 {
 	if (!s->dirty)
@@ -1106,7 +1106,7 @@ statusbar_draw(struct statusbar *s)
 	cursorrestore();
 }
 
-void
+static void
 statusbar_update(struct statusbar *s, const char *text)
 {
 	if (s->text && !strcmp(s->text, text))
@@ -1118,7 +1118,7 @@ statusbar_update(struct statusbar *s, const char *text)
 }
 
 /* Line to item, modifies and splits line in-place. */
-int
+static int
 linetoitem(char *line, struct item *item)
 {
 	char *fields[FieldLast];
@@ -1144,7 +1144,7 @@ linetoitem(char *line, struct item *item)
 	return 0;
 }
 
-void
+static void
 feed_items_free(struct items *items)
 {
 	size_t i;
@@ -1159,7 +1159,7 @@ feed_items_free(struct items *items)
 	items->cap = 0;
 }
 
-void
+static void
 feed_items_get(struct feed *f, FILE *fp, struct items *itemsret)
 {
 	struct item *item, *items = NULL;
@@ -1207,7 +1207,7 @@ feed_items_get(struct feed *f, FILE *fp, struct items *itemsret)
 	free(line);
 }
 
-void
+static void
 updatenewitems(struct feed *f)
 {
 	struct pane *p;
@@ -1231,7 +1231,7 @@ updatenewitems(struct feed *f)
 	f->total = p->nrows;
 }
 
-void
+static void
 feed_load(struct feed *f, FILE *fp)
 {
 	/* static, reuse local buffers */
@@ -1252,7 +1252,7 @@ feed_load(struct feed *f, FILE *fp)
 	updatenewitems(f);
 }
 
-void
+static void
 feed_count(struct feed *f, FILE *fp)
 {
 	char *fields[FieldLast];
@@ -1281,7 +1281,7 @@ feed_count(struct feed *f, FILE *fp)
 	free(line);
 }
 
-void
+static void
 feed_setenv(struct feed *f)
 {
 	if (f && f->path)
@@ -1291,7 +1291,7 @@ feed_setenv(struct feed *f)
 }
 
 /* Change feed, have one file open, reopen file if needed. */
-void
+static void
 feeds_set(struct feed *f)
 {
 	if (curfeed) {
@@ -1311,7 +1311,7 @@ feeds_set(struct feed *f)
 	curfeed = f;
 }
 
-void
+static void
 feeds_load(struct feed *feeds, size_t nfeeds)
 {
 	struct feed *f;
@@ -1354,7 +1354,7 @@ feeds_load(struct feed *feeds, size_t nfeeds)
 }
 
 /* find row position of the feed if visible, else return -1 */
-off_t
+static off_t
 feeds_row_get(struct pane *p, struct feed *f)
 {
 	struct row *row;
@@ -1371,7 +1371,7 @@ feeds_row_get(struct pane *p, struct feed *f)
 	return -1;
 }
 
-void
+static void
 feeds_reloadall(void)
 {
 	struct pane *p;
@@ -1400,7 +1400,7 @@ feeds_reloadall(void)
 		pane_setpos(p, 0);
 }
 
-void
+static void
 feed_open_selected(struct pane *p)
 {
 	struct feed *f;
@@ -1424,7 +1424,7 @@ feed_open_selected(struct pane *p)
 	}
 }
 
-void
+static void
 feed_plumb_selected_item(struct pane *p, int field)
 {
 	struct row *row;
@@ -1441,7 +1441,7 @@ feed_plumb_selected_item(struct pane *p, int field)
 	forkexec(cmd, plumberia);
 }
 
-void
+static void
 feed_pipe_selected_item(struct pane *p)
 {
 	struct row *row;
@@ -1454,7 +1454,7 @@ feed_pipe_selected_item(struct pane *p)
 	pipeitem(pipercmd, item, -1, piperia);
 }
 
-void
+static void
 feed_yank_selected_item(struct pane *p, int field)
 {
 	struct row *row;
@@ -1467,7 +1467,7 @@ feed_yank_selected_item(struct pane *p, int field)
 }
 
 /* calculate optimal (default) size */
-int
+static int
 getsidebarsizedefault(void)
 {
 	struct feed *feed;
@@ -1500,7 +1500,7 @@ getsidebarsizedefault(void)
 	return 0;
 }
 
-int
+static int
 getsidebarsize(void)
 {
 	int size;
@@ -1510,7 +1510,7 @@ getsidebarsize(void)
 	return size;
 }
 
-void
+static void
 adjustsidebarsize(int n)
 {
 	int size;
@@ -1533,7 +1533,7 @@ adjustsidebarsize(int n)
 	}
 }
 
-void
+static void
 updatesidebar(void)
 {
 	struct pane *p;
@@ -1585,7 +1585,7 @@ updatesidebar(void)
 		p->pos = p->nrows - 1;
 }
 
-void
+static void
 sighandler(int signo)
 {
 	switch (signo) {
@@ -1597,7 +1597,7 @@ sighandler(int signo)
 	}
 }
 
-void
+static void
 alldirty(void)
 {
 	win.dirty = 1;
@@ -1609,7 +1609,7 @@ alldirty(void)
 	statusbar.dirty = 1;
 }
 
-void
+static void
 draw(void)
 {
 	struct row *row;
@@ -1643,7 +1643,7 @@ draw(void)
 	statusbar_draw(&statusbar);
 }
 
-void
+static void
 mousereport(int button, int release, int keymask, int x, int y)
 {
 	struct pane *p;
@@ -1715,7 +1715,7 @@ mousereport(int button, int release, int keymask, int x, int y)
 }
 
 /* Custom formatter for feed row. */
-char *
+static char *
 feed_row_format(struct pane *p, struct row *row)
 {
 	/* static, reuse local buffers */
@@ -1756,7 +1756,7 @@ feed_row_format(struct pane *p, struct row *row)
 	return text;
 }
 
-int
+static int
 feed_row_match(struct pane *p, struct row *row, const char *s)
 {
 	struct feed *feed;
@@ -1766,7 +1766,7 @@ feed_row_match(struct pane *p, struct row *row, const char *s)
 	return (strcasestr(feed->name, s) != NULL);
 }
 
-struct row *
+static struct row *
 item_row_get(struct pane *p, off_t pos)
 {
 	struct row *itemrow;
@@ -1803,7 +1803,7 @@ item_row_get(struct pane *p, off_t pos)
 }
 
 /* Custom formatter for item row. */
-char *
+static char *
 item_row_format(struct pane *p, struct row *row)
 {
 	/* static, reuse local buffers */
@@ -1835,7 +1835,7 @@ item_row_format(struct pane *p, struct row *row)
 	return text;
 }
 
-void
+static void
 markread(struct pane *p, off_t from, off_t to, int isread)
 {
 	struct row *row;
@@ -1898,13 +1898,13 @@ markread(struct pane *p, off_t from, off_t to, int isread)
 	}
 }
 
-int
+static int
 urls_cmp(const void *v1, const void *v2)
 {
 	return strcmp(*((char **)v1), *((char **)v2));
 }
 
-void
+static void
 urls_free(struct urls *urls)
 {
 	while (urls->len > 0) {
@@ -1917,14 +1917,14 @@ urls_free(struct urls *urls)
 	urls->cap = 0;
 }
 
-int
+static int
 urls_hasmatch(struct urls *urls, const char *url)
 {
 	return (urls->len &&
 	       bsearch(&url, urls->items, urls->len, sizeof(char *), urls_cmp));
 }
 
-void
+static void
 urls_read(struct urls *urls, const char *urlfile)
 {
 	FILE *fp;
