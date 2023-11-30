@@ -121,7 +121,7 @@ printfeed(FILE *fp, const char *feedname)
 		}
 
 		if (fields[FieldEnclosure][0]) {
-			fputs(",\n\t\"attachments\": [{\"url:\": \"", stdout);
+			fputs(",\n\t\"attachments\": [{\"url\": \"", stdout);
 			printfield(fields[FieldEnclosure]);
 			fputs("\"}]", stdout);
 		}
